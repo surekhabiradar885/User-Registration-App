@@ -1,28 +1,36 @@
-<div class="row">
-    
+<div class="row">    
     <div class="col-xs-12 col-md-3 col-md-offset-3">
-        <h4 class="mb-3">Login</h4>
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+       <div class="p-5 text-center" > <h4 class="mb-3">Login Account</h4></div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
-                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                    <div *ngIf="f.username.errors.required">Username is required</div>
-                </div>
+                <label for="username">Email Address</label>
+                <input type="text" 
+                formControlName="username" 
+                class="form-control" 
+                [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                          <span
+              *ngIf="!loginForm.get('username').valid && loginForm.get('username').touched"
+              class="help-block">
+              <span *ngIf="loginForm.get('username').errors['required']">This field is required!</span>
+
+            </span> 
             </div>
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
-                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                    <div *ngIf="f.password.errors.required">Password is required</div>
+                <input type="password" 
+                formControlName="password" 
+                class="form-control" 
+                [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <div *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched"
+                 class="invalid-feedback">
+                Password min length should be 6!
                 </div>
             </div>
             <div class="form-group">
-                <button [disabled]="loading" class="btn btn-primary btn-block">
+                <button [disabled]="!loginForm.valid" class="btn btn-primary btn-block">
                     <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                     Login
                 </button>
-              <!--   <a routerLink="../register" class="btn btn-link">Register</a> -->
             </div>
         </form>
     </div>

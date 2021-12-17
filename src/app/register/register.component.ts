@@ -28,6 +28,8 @@ export class RegisterComponent implements OnInit {
         'email': new FormControl(null, [Validators.required, Validators.email],),
         'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
         'confirmPassword': new FormControl(null, [Validators.required, Validators.minLength(6),])
+      }, {
+        validators: [this.passwordConfirming]
       }),
      
     });
@@ -37,16 +39,15 @@ export class RegisterComponent implements OnInit {
   }
 
   // convenience getter for easy access to form fields
-//  get f() { return this.form.controls; }
+ /*  get f() { return this.authForm.controls; } */
 
   onSubmit() {
-  /*   if (!form.valid) {
+    if (!this.authForm.valid) {
       return;
-    } */
-    console.log("fomr value ", this.authForm);
-/*     const email = form.value.email;
-    const passsword = form.value.password;
-    const name = form.value.name;
+    }
+    const email = this.authForm.get('userData.email').value
+    const passsword = this.authForm.get('userData.password').value
+    const name = this.authForm.get('userData.name').value
     this.authService.signUp(name,email, passsword).subscribe(
       resData => {
         console.log("resData", resData);
@@ -54,35 +55,17 @@ export class RegisterComponent implements OnInit {
      },
       error => {
         console.log("error", error);
-    }); */
+    });
    // form.reset();
     
   }
 
- /*  onSubmit() {
-    this.submitted = true;
 
-    // reset alerts on submit
-   // this.alertService.clear();
 
-    // stop here if form is invalid
-    if (this.form.invalid) {
-      return;
+  passwordConfirming(c: AbstractControl): { invalid: boolean } {
+   // console.log("fomr value ", this.authForm);
+    if (c.get('password').value !== c.get('confirmPassword').value) {
+      return { invalid: true };
     }
-
-    this.loading = true;
-    this.accountService.register(this.form.value)
-      .pipe(first())
-      .subscribe({
-        next: () => {
-          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-          this.router.navigate(['../login'], { relativeTo: this.route });
-        },
-        error: error => {
-          this.alertService.error(error);
-          this.loading = false;
-        }
-      });
-  } */
-  
+  }
 }

@@ -7,7 +7,7 @@ import { first } from 'rxjs/operators';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
-  form: FormGroup;
+  loginForm: FormGroup;
   loading = false;
   submitted = false;
 
@@ -20,16 +20,16 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
+    this.loginForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required]
+      password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+  get f() { return this.loginForm.controls; }
 
-  /* onSubmit() {
+  onSubmit() {
     this.submitted = true;
 
     // reset alerts on submit
@@ -54,5 +54,5 @@ export class LoginComponent implements OnInit {
           this.loading = false;
         }
       });
-  } */
+  }
 }
