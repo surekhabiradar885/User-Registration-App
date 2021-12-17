@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators, FormControl, AbstractControl } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 import { AuthService } from '../services/auth.service';
 
 //import { AccountService, AlertService } from '@app/_services';
 
 @Component({ templateUrl: 'register.component.html' })
 export class RegisterComponent implements OnInit {
-  form: FormGroup;
+  authForm: FormGroup;
   loading = false;
   submitted = false;
 
@@ -20,25 +21,30 @@ export class RegisterComponent implements OnInit {
    
   ) { }
 
-  ngOnInit() {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.required],
-      email: ['', Validators.required],
-     // password: ['', Validators.required],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
+  ngOnInit() {  
+    this.authForm = new FormGroup({
+      'userData': new FormGroup({
+        'name': new FormControl(null, [Validators.required,]),
+        'email': new FormControl(null, [Validators.required, Validators.email],),
+        'password': new FormControl(null, [Validators.required, Validators.minLength(6)]),
+        'confirmPassword': new FormControl(null, [Validators.required, Validators.minLength(6),])
+      }),
+     
     });
+    this.authForm.statusChanges.subscribe(
+      (status) => console.log(status)
+    );
   }
 
   // convenience getter for easy access to form fields
-  get f() { return this.form.controls; }
+//  get f() { return this.form.controls; }
 
-  onSubmit(form: NgForm) {
-    if (!form.valid) {
+  onSubmit() {
+  /*   if (!form.valid) {
       return;
-    }
-    console.log("fomr value ", form.value);
-    const email = form.value.email;
+    } */
+    console.log("fomr value ", this.authForm);
+/*     const email = form.value.email;
     const passsword = form.value.password;
     const name = form.value.name;
     this.authService.signUp(name,email, passsword).subscribe(
@@ -48,7 +54,7 @@ export class RegisterComponent implements OnInit {
      },
       error => {
         console.log("error", error);
-    });
+    }); */
    // form.reset();
     
   }
@@ -78,4 +84,5 @@ export class RegisterComponent implements OnInit {
         }
       });
   } */
+  
 }

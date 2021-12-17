@@ -1,3 +1,16 @@
 .nav>li>a {
     color: white;
 }
+.router-link-active {
+  color: #000;
+  font-weight: bold;
+}
+.nav>li>a.active {
+      font-weight: bold;
+  color: yellow
+}
+.nav>li>a:focus,
+.nav>li>a:hover {
+
+        background-color: cornflowerblue;
+}
